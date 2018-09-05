@@ -8,11 +8,11 @@ function MemoryGame(mainContainer, startButton) {
 
 MemoryGame.prototype.init = function() {
   this.fetchImages();
-  this.startEventHandler();
+  this.bindEvents();
 };
 
-MemoryGame.prototype.startEventHandler = function() {
-  this.startButton.on("click", this.createContainers.bind(this));
+MemoryGame.prototype.bindEvents = function() {
+  this.startButton.on("click", this.startEventHandler.bind(this));
 };
 
 MemoryGame.prototype.fetchImages = function() {
@@ -31,9 +31,14 @@ MemoryGame.prototype.fetchImages = function() {
   }
 };
 
-MemoryGame.prototype.createContainers = function(event) {
+MemoryGame.prototype.startEventHandler = function() {
   this.startButton.hide();
   this.startTimer();
+  this.createContainers();
+  this.imageEventHandler();
+}
+
+MemoryGame.prototype.createContainers = function(event) {
   for (var i = 0; i < 36; i++) {
     $('<div>', {
         'data-type': 'img-container',
@@ -45,9 +50,7 @@ MemoryGame.prototype.createContainers = function(event) {
     var random = this.intArray.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
     $('[data-index=' + random + ']').append(this.imageContainerArray[i]);
   }
-
   $('img').hide();
-  this.imageEventHandler();
 };
 
 MemoryGame.prototype.startTimer = function() {
@@ -60,20 +63,19 @@ MemoryGame.prototype.startTimer = function() {
 MemoryGame.prototype.imageEventHandler = function() {
   var _this = this;
   $('[data-type="img-container"]').on("click", function(event) {
-    var imageIndex = $(event.target).find('img').data('image-index');
-    if (imageIndex === undefined) {
-
-    } else {
+    var eventTarget = $(event.target),
+      imageIndex = eventTarget.find('img').data('image-index');
+    if (imageIndex !== undefined) {
       if (_this.imgArr.length === 0) {
         _this.imgArr.push(imageIndex);
-        $(event.target).find('img').show();
+        eventTarget.find('img').show();
       } else {
         var present = $.inArray(imageIndex, _this.imgArr);
         if (present == -1) {
           $('[data-image-index="' + _this.imgArr[0] + '"]').fadeOut();
-          $(event.target).find('img').show().fadeOut();
+          eventTarget.find('img').show().fadeOut();
         } else {
-          $(event.target).find('img').show();
+          eventTarget.find('img').show();
         }
         _this.imgArr = [];
       }
