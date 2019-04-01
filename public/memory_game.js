@@ -20,7 +20,7 @@ MemoryGame.prototype.bindEvents = function() {
 
 MemoryGame.prototype.pushImageToContainer = function(index) {
   this.imageContainerArray.push($('<img>', {
-    'src': 'image_' + index + '.jpg',
+    'src': './images/image_' + index + '.jpg',
     'data-image-index': index
   }));
 };
@@ -56,13 +56,13 @@ MemoryGame.prototype.distributeImagesAtRandom = function() {
 
 MemoryGame.prototype.createContainers = function(event) {
   var index = 0,
-    tempContainer = $('<div>');
+  tempContainer = $('<div>');
   while (index < this.numberOfBoxes) {
     $('<div>', {
-        'data-type': 'img-container',
-        'data-index': index
-      }).addClass("boxContainer")
-      .appendTo(tempContainer);
+      'data-type': 'img-container',
+      'data-index': index
+    }).addClass("boxContainer")
+    .appendTo(tempContainer);
     index++;
   }
   this.mainContainer.append(tempContainer.find('div'));
@@ -78,7 +78,7 @@ MemoryGame.prototype.startTimer = function() {
 
 MemoryGame.prototype.imageEventHandler = function(event) {
   var eventTarget = $(event.target),
-    imageIndex = eventTarget.find('img').data('image-index');
+  imageIndex = eventTarget.find('img').data('image-index');
   this.imageOperation(eventTarget, imageIndex);
 };
 
@@ -112,11 +112,11 @@ MemoryGame.prototype.ifWon = function() {
 
 $(function() {
   var options = {
-      mainContainer: $('[data-behaviour="container"]'),
-      startButton: $('[data-type="button"]'),
-      numberOfBoxes: 36,
-      timeForTimer: 12,
-    },
-    memoryGame = new MemoryGame(options);
+    mainContainer: $('[data-behaviour="container"]'),
+    startButton: $('[data-type="button"]'),
+    numberOfBoxes: 36,
+    timeForTimer: 12,
+  },
+  memoryGame = new MemoryGame(options);
   memoryGame.init();
 });
